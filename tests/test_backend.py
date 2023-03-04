@@ -8,8 +8,8 @@ def test_backend_factory_files_class(configuration, mappings_file):
     assert isinstance(backend, FileSystemBackend),\
         f"Backend should be of type FileSystemBackend, got {backend.__class__} instead"
     assert configuration["files"]["filename"] == backend.filename
-    assert configuration["backend"]["max_generation_retries"] == backend.max_generation_retries
-    assert configuration["backend"]["url_length"] == backend.url_length
+    assert int(configuration["backend"]["max_generation_retries"]) == backend.max_generation_retries
+    assert int(configuration["backend"]["url_length"]) == backend.url_length
 
 
 def test_backend_filesystem_write_url(configuration, mappings_file):

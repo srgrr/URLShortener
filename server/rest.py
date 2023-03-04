@@ -6,6 +6,7 @@ from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from backend import get_backend
 from pydantic import BaseModel
+from typing import Optional
 
 app_configuration = get_configuration()
 
@@ -33,7 +34,7 @@ def startup():
 
 class CreateBody(BaseModel):
     long_url: str
-    desired_vanity: str
+    desired_vanity: Optional[str]
 
 
 @app.post("/", tags=["shortener"])
@@ -55,13 +56,13 @@ async def create_url(body: CreateBody):
 async def get_url(shortened_url):
     """Given a short url, get redirected to the URL mapped by it
     :param shortened_url: Short URL
-    :return: 301 (permanent redirect)
+    :return: 302: found (temporary redirect)
     """
     long_url = _get_long_url(shortened_url)
 
     if long_url is not None:
         return JSONResponse(
-            status_code=status.HTTP_301_MOVED_PERMANENTLY,
+            status_code=status.HTTP_302_FOUND,
             headers={"Location": long_url},
             content=None
         )
@@ -75,8 +76,8 @@ async def get_url(shortened_url):
 @app.exception_handler(Exception)
 def oauth_error_handler(_: Request, ex: Exception):
     return JSONResponse(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        content={"message": "Something went wrong"},
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"message": f"Something went wrong: {ex}"},
         headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
     )
 

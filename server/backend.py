@@ -69,8 +69,8 @@ class FileSystemBackend(Backend):
 
     def __init__(self, **kwargs):
         self.filename = kwargs.pop("filename")
-        self.max_generation_retries = int(kwargs.pop("max_generation_retries"))
-        self.url_length = int(kwargs.pop("url_length"))
+        self.max_generation_retries = kwargs.pop("max_generation_retries")
+        self.url_length = kwargs.pop("url_length")
         if not os.path.exists(self.filename):
             with self._get_lock():
                 with open(self.filename, "a") as f:
@@ -83,7 +83,7 @@ def get_backend(configuration):
     if implementation == "files":
         return FileSystemBackend(
             filename=configuration["files"]["filename"],
-            max_generation_retries=configuration["backend"]["max_generation_retries"],
-            url_length=configuration["backend"]["url_length"]
+            max_generation_retries=int(configuration["backend"]["max_generation_retries"]),
+            url_length=int(configuration["backend"]["url_length"])
         )
     raise TypeError(f"Specified implementation {implementation} doesn't exist, check configuration.ini")

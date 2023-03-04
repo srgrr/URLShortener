@@ -15,6 +15,7 @@ url_length=6
 [files]
 filename=url_mappings.txt
 """
+test_file_name = "url_mappings.txt"
 
 
 @pytest.fixture(scope="function")
@@ -26,8 +27,8 @@ def configuration():
 
 @pytest.fixture(scope="function")
 def mappings_file():
-    yield "url_mappings.txt"
-    if os.path.exists("url_mappings.txt"):
-        os.unlink("url_mappings.txt")
-    if os.path.exists("url_mappings.txt.lock"):
-        os.unlink("url_mappings.txt.lock")
+    yield test_file_name
+    if os.path.exists(test_file_name):
+        os.unlink(test_file_name)
+    if os.path.exists(f"{test_file_name}.lock"):
+        os.unlink(f"{test_file_name}.lock")
