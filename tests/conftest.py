@@ -4,7 +4,7 @@ from configparser import ConfigParser
 
 config_file_contents = """
 [server]
-port=9113
+port=8080
 logging_file=shortener.log
 
 [backend]
