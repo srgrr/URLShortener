@@ -65,6 +65,7 @@ class FileSystemBackend(Backend):
             short, long = map(str.strip, line.strip().split("->"))
             if short == short_url:
                 return long
+        return None
 
     def __init__(self, **kwargs):
         self.filename = kwargs.pop("filename")

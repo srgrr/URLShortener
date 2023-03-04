@@ -1,3 +1,4 @@
+import pytest
 from server.backend import get_backend, FileSystemBackend
 
 
@@ -22,3 +23,21 @@ def test_backend_filesystem_write_url(configuration, mappings_file):
 
     assert entries == {"short_url_1": "long_url_1", "short_url_2": "long_url_2"},\
         f"Filesystem entries are {entries}"
+
+
+@pytest.mark.parametrize(
+    "short, expected",
+    [
+        ("short1", "long1"),
+        ("short2", "long2"),
+        ("short3", None)
+    ]
+)
+def test_backend_filesystem_get_short_url(configuration, mappings_file, short, expected):
+    configuration["backend"]["implementation"] = "files"
+    with open(mappings_file, "a") as f:
+        f.write("short1 -> long1\n")
+        f.write("short2 -> long2\n")
+
+    backend = get_backend(configuration)
+    assert backend.get_long_url(short) == expected
