@@ -14,7 +14,20 @@ Run `docker build -t shortener .` in the root of the repository.
 
 Then `docker run shortener p port:port` should do the trick
 
+TODO: make container parameterizable
+
 ## Available storage methods
+
+URL mappings can either be stored in files or in Redis. Both systems have the following common configuration paramters
+
+```
+implementation=redis|files
+max_generation_retries=10
+url_length=3
+url_pool=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+```
+
+Names are kind of self-explanatory I think.
 
 ### Filesystem
 Meant for testing purposes. Stores all entries in a file.
@@ -28,7 +41,12 @@ username=root
 password=root
 bucket_size=16384
 ```
-Redis will convert all the URLs to numbers in base `pool_size`. Each number will belong to a bucket `num // bucket_size`. This will allow the shortener to easily find available short URLs.
+Redis will convert all the URLs to numbers in base `pool_size`.
+
+A short url with number `N` will belong to bucket `N // num_buckets`.
+
+If `bucket_size = 128` we will only need to check 128 positions to find a suitable candidate for a new, randomly generated short url.
+
 
 
 ## Local env
