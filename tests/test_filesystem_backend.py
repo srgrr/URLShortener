@@ -1,8 +1,9 @@
 import pytest
-from server.backend import get_backend, FileSystemBackend
+from server.backend_accessor import get_backend
+from server.file_system_backend import FileSystemBackend
 
 
-def test_backend_factory_files_class(configuration, mappings_file):
+def test_backend_factory_filesystem_class(configuration, mappings_file):
     configuration["backend"]["implementation"] = "files"
     backend = get_backend(configuration)
     assert isinstance(backend, FileSystemBackend),\

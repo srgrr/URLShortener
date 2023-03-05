@@ -4,7 +4,7 @@ from cli import get_configuration
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
-from backend import get_backend
+from backend_accessor import get_backend
 from pydantic import BaseModel
 from typing import Optional
 
