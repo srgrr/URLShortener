@@ -6,17 +6,23 @@ from random import choice
 
 class RedisBackend(Backend):
     def get_new_url(self) -> str:
-        bucket = int(self.r.srandmember("free_buckets"))
+        bucket_bytes = self.r.srandmember("free_buckets")
+        bucket = int(bucket_bytes)
         bucket_key = f"bucket_{bucket}"
 
-        keys_in_bucket = self.r.get(bucket_key) or set()
-        lowest_key, highest_key = bucket * self.bucket_size, bucket * (self.bucket_size + 1)
+        keys_in_bucket = set([int(x) for x in self.r.smembers(bucket_key)])
+        lowest_key = bucket * self.bucket_size
+        highest_key = min(len(self.url_pool) ** self.url_length, lowest_key + self.bucket_size)
         potential_keys = set(list(range(lowest_key, highest_key)))
 
         chosen_key = choice(list(potential_keys - keys_in_bucket))
         self.r.sadd(bucket_key, chosen_key)
-        if self.r.scard(bucket_key) == self.bucket_size:
-            self.r.srem("free_buckets", bucket_key)
+
+        max_bucket_len = self.bucket_size if bucket + 1 < self._num_buckets else \
+            self._num_short % self.bucket_size
+
+        if self.r.scard(bucket_key) == max_bucket_len:
+            self.r.srem("free_buckets", bucket_bytes)
 
         return self._number2short(int(chosen_key))
 
@@ -59,6 +65,8 @@ class RedisBackend(Backend):
         self.bucket_size = int(kwargs.pop("bucket_size"))
         super().__init__(**kwargs)
 
+        self._num_short = len(self.url_pool) ** self.url_length
+        self._num_buckets = (self._num_short + self.bucket_size - 1) // self.bucket_size
         self.r = self._get_redis_client()
         self.val2pos = {
             k: v for (v, k) in enumerate(self.url_pool)

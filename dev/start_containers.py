@@ -84,7 +84,7 @@ def main(redis_host, redis_port, redis_insight_port, redis_bucket_size, url_leng
             )
         )
         for start in range(0, num_buckets, 20000):
-            bucket_ids = list(range(start, start + 20000))
+            bucket_ids = list(range(start, min(num_buckets, start + 20000)))
             redis_client.sadd("free_buckets", *bucket_ids)
 
 

@@ -3,3 +3,5 @@ uvicorn~=0.20.0
 filelock~=3.9.0
 pydantic~=1.10.5
 redis~=4.5.1
+requests~=2.28.2
+matplotlib~=3.7.1
