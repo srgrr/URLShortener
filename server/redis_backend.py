@@ -24,7 +24,9 @@ class RedisBackend(Backend):
         self.r.set(f"URL_{self._short2number(short_url)}", long_url)
 
     def get_long_url(self, short_url: str) -> Optional[str]:
-        return self.r.get(f"URL_{self._short2number(short_url)}").decode("utf-8")
+        fetched_url = self.r.get(f"URL_{self._short2number(short_url)}")
+        if fetched_url:
+            return fetched_url.decode("utf-8")
 
     def _get_redis_client(self):
         return redis.Redis(
