@@ -60,7 +60,7 @@ async def get_url(shortened_url):
     """
     long_url = _get_long_url(shortened_url)
 
-    if long_url is not None:
+    if long_url:
         return JSONResponse(
             status_code=status.HTTP_302_FOUND,
             headers={"Location": long_url},
@@ -87,7 +87,12 @@ def _get_new_url():
 
 
 def _get_short_url(desired_vanity=None):
-    if desired_vanity and _get_long_url(desired_vanity) is None:
+    if desired_vanity:
+        if _get_long_url(desired_vanity):
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                f"URL {desired_vanity} is already taken"
+            )
         return desired_vanity
     return _get_new_url()
 
