@@ -10,7 +10,9 @@ python server/rest.py --configuration-file <path-to-file>
 `FastAPI` generates a swagger interface that can be accessed in `localhost:port`. 
 
 ## Containerization
-TODO
+Run `docker build -t shortener .` in the root of the repository.
+
+Then `docker run shortener p port:port` should do the trick
 
 ## Available storage methods
 

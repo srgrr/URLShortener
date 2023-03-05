@@ -102,4 +102,4 @@ def _get_long_url(short_url):
 
 
 if __name__ == '__main__':
-    uvicorn.run("server.rest:app", host="0.0.0.0", port=int(app_configuration["server"]["port"]))
+    uvicorn.run("rest:app", host="0.0.0.0", port=int(app_configuration["server"]["port"]))
