@@ -20,7 +20,15 @@ Then `docker run shortener p port:port` should do the trick
 Meant for testing purposes. Stores all entries in a file.
 
 ### Redis
-TODO
+Store all short url mappings in a Redis instance, requires the following configuration parameters
+```
+host=localhost
+port=6379
+username=root
+password=root
+bucket_size=16384
+```
+Redis will convert all the URLs to numbers in base `pool_size`. Each number will belong to a bucket `num // bucket_size`. This will allow the shortener to easily find available short URLs.
 
 
 ## Local env

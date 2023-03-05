@@ -3,7 +3,7 @@ import json
 import time
 import matplotlib.pyplot as plt
 
-N = 62 ** 2
+N = 62 ** 3
 samples = []
 
 urls = set()
