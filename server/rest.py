@@ -42,7 +42,7 @@ async def create_url(body: CreateBody):
     """Get a new short URL for a given long URL
     :param body: Body is a JSON with two strings long_url and desired_vanity, the later can be left empty if there is
     no particular preference
-    :return: 200 (OK), {"short_url": generated_short_url}
+    :return: 200 (OK), {"short_url": generated_short_url}, 409 if desired vanity is already taken, 500 if URL gen failed
     """
     long_url, desired_vanity = body.long_url, body.desired_vanity
     short_url = _get_short_url(desired_vanity)
