@@ -28,4 +28,7 @@ class Backend(ABC):
         pass
 
     def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+        self.max_generation_retries = int(kwargs.pop("max_generation_retries"))
+        self.url_length = int(kwargs.pop("url_length"))
+        self.url_pool = kwargs.pop("url_pool")
+        assert len(kwargs) == 0, f"Backend received extra arguments: {kwargs}"

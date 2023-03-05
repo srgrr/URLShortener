@@ -39,10 +39,8 @@ class FileSystemBackend(Backend):
 
     def __init__(self, **kwargs):
         self.filename = kwargs.pop("filename")
-        self.max_generation_retries = kwargs.pop("max_generation_retries")
-        self.url_length = kwargs.pop("url_length")
         if not os.path.exists(self.filename):
             with self._get_lock():
-                with open(self.filename, "a") as f:
+                with open(self.filename, "a"):
                     pass
         super().__init__(**kwargs)

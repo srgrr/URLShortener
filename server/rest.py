@@ -1,5 +1,6 @@
 import uvicorn
 import logging
+import logging
 from cli import get_configuration
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import HTTPException
@@ -101,5 +102,16 @@ def _get_long_url(short_url):
     return get_backend(app_configuration).get_long_url(short_url)
 
 
+def _configure_logger():
+    args = {
+        "filename": app_configuration["server"]["logging_file"],
+        "level": logging.DEBUG,
+        "format": "%(asctime)s %(levelname)-8s %(message)s",
+        "datefmt": "%Y-%m-%d %H:%M:%S"
+    }
+    logging.basicConfig(**args)
+
+
 if __name__ == '__main__':
+    _configure_logger()
     uvicorn.run("rest:app", host="0.0.0.0", port=int(app_configuration["server"]["port"]))
