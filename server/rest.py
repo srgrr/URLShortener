@@ -1,6 +1,5 @@
 import uvicorn
 import logging
-import logging
 from cli import get_configuration
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import HTTPException

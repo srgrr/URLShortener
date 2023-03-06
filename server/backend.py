@@ -6,7 +6,7 @@ class Backend(ABC):
     @abstractmethod
     def get_new_url(self) -> str:
         """Get a new shortened URL. It must be unique and not exist in the URL DB
-        :return: str consisting of lowercase letters and digits [a-z0-9]
+        :return: str consisting of characters in url_pool (configurable value)
         """
         pass
 
