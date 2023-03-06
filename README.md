@@ -12,9 +12,17 @@ python server/rest.py --configuration-file <path-to-file>
 ## Containerization
 Run `docker build -t shortener .` in the root of the repository.
 
-Then `docker run shortener p port:port` should do the trick
+Then `docker run -p port:port shortener` should do the trick
 
-TODO: make container parameterizable
+If you want to use a custom configuration file you can do it with
+
+```
+docker run -v path/to/file/configuration.ini:/server/configuration.ini \
+-p port:port \
+shortener
+```
+
+It will overwrite the configuration file right before starting the container
 
 ## Available storage methods
 
