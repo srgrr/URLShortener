@@ -1,5 +1,5 @@
 import os
-from backend import Backend
+from .backend import Backend
 from string import ascii_lowercase, digits
 from random import choice
 from filelock import FileLock

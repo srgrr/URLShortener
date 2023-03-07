@@ -1,5 +1,5 @@
-from file_system_backend import FileSystemBackend
-from redis_backend import RedisBackend
+from .file_system_backend import FileSystemBackend
+from .redis_backend import RedisBackend
 from configparser import ConfigParser
 
 

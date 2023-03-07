@@ -8,12 +8,20 @@ port=8080
 logging_file=shortener.log
 
 [backend]
-implementation=files
+implementation=redis
 max_generation_retries=10
-url_length=6
+url_length=3
+url_pool=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
 
 [files]
 filename=url_mappings.txt
+
+[redis]
+host=localhost
+port=6379
+username=root
+password=root
+bucket_size=16384
 """
 test_file_name = "url_mappings.txt"
 

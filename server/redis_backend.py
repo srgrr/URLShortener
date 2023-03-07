@@ -1,6 +1,6 @@
 import redis
 from typing import Optional
-from backend import Backend
+from .backend import Backend
 from random import choice
 
 
