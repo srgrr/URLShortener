@@ -3,7 +3,7 @@ Yet another implementation of the classical URL Shortener.
 
 ## How to use it
 ```
-python server/rest.py --configuration-file <path-to-file>
+python -m server.rest --configuration-file <path-to-file>
 ```
 `rest` folder contains a `configuration.ini` file with a sample configuration.
 
@@ -17,10 +17,12 @@ Then `docker run -p port:port shortener` should do the trick
 If you want to use a custom configuration file you can do it with
 
 ```
-docker run -v path/to/file/configuration.ini:/server/configuration.ini \
+docker run -v path/to/file/folder/:/config \
 -p port:port \
 shortener
 ```
+
+Make sure your configuration file is named `configuration.ini`
 
 It will overwrite the configuration file right before starting the container
 

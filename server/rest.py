@@ -1,10 +1,10 @@
 import uvicorn
 import logging
-from cli import get_configuration
+from .cli import get_configuration
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
-from backend_accessor import get_backend
+from .backend_accessor import get_backend
 from pydantic import BaseModel
 from typing import Optional
 
@@ -113,4 +113,4 @@ def _configure_logger():
 
 if __name__ == '__main__':
     _configure_logger()
-    uvicorn.run("rest:app", host="0.0.0.0", port=int(app_configuration["server"]["port"]))
+    uvicorn.run("server.rest:app", host="0.0.0.0", port=int(app_configuration["server"]["port"]))
