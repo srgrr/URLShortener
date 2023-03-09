@@ -58,6 +58,8 @@ A short url with number `N` will belong to bucket `N // num_buckets`.
 If `bucket_size = 128` we will only need to check 128 positions to find a suitable candidate for a new, randomly generated short url.
 
 
+## Caching
+Caching can be enabled/disabled in `configuration.ini`. Right now it only supports `memcached`
 
 ## Local env
 You can make the access to your local shortener service more convenient by changing `/etc/hosts` and using a reverse proxy.

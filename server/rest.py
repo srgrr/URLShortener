@@ -7,6 +7,8 @@ from fastapi.responses import JSONResponse
 from .backend_accessor import get_backend
 from pydantic import BaseModel
 from typing import Optional
+from pymemcache.client import base
+
 
 app_configuration = get_configuration()
 
@@ -46,6 +48,7 @@ async def create_url(body: CreateBody):
     """
     long_url, desired_vanity = body.long_url, body.desired_vanity
     short_url = _get_short_url(desired_vanity)
+    _insert_url(long_url, short_url)
     get_backend(app_configuration).insert_new_url(long_url, short_url)
     return {
         "short_url": short_url
@@ -97,8 +100,36 @@ def _get_short_url(desired_vanity=None):
     return _get_new_url()
 
 
+def _get_memcached_client():
+    return base.Client(
+        (
+            app_configuration["caching"]["host"],
+            app_configuration["caching"]["port"]
+        )
+    )
+
+
+def _get_cached_url(short_url):
+    client = _get_memcached_client()
+    return client.get(short_url)
+
+
+def _is_caching_enabled():
+    return app_configuration["caching"]["enabled"] == "true"
+
+
 def _get_long_url(short_url):
+    if _is_caching_enabled():
+        cached_url = _get_cached_url(short_url)
+        if cached_url:
+            return cached_url.decode("utf-8")
     return get_backend(app_configuration).get_long_url(short_url)
+
+
+def _insert_url(long_url, short_url):
+    if _is_caching_enabled():
+        _get_memcached_client().set(short_url, long_url)
+    get_backend(app_configuration).insert_new_url(long_url, short_url)
 
 
 def _configure_logger():
