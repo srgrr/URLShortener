@@ -57,6 +57,8 @@ A short url with number `N` will belong to bucket `N // num_buckets`.
 
 If `bucket_size = 128` we will only need to check 128 positions to find a suitable candidate for a new, randomly generated short url.
 
+TODO: Vanity doesn't update bucket info, it will throw a 500 error, but it won't prevent the service from picking that particular bucket again
+TODO: Two concurrent processes might end up choosing the same random URL. Whoever wrote it the last will get the right mapping (maybe add bucket-key locking?)
 
 ## Caching
 Caching can be enabled/disabled in `configuration.ini`. Right now it only supports `memcached`
